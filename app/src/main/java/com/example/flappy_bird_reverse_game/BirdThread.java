@@ -1,6 +1,9 @@
 package com.example.flappy_bird_reverse_game;
 
 import android.os.AsyncTask;
+import android.util.Log;
+
+import static com.example.flappy_bird_reverse_game.MainActivity.numberOfObstacles;
 
 public class BirdThread extends Thread {
 
@@ -11,7 +14,8 @@ public class BirdThread extends Thread {
         while(true){
             MainActivity.draw_dird();
             if(MainActivity.bird_up) {
-                MainActivity.bird_y -= 15;
+                if(MainActivity.bird_y > 15)
+                    MainActivity.bird_y -= 15;
                 ups++;
                 if (ups >= 3) {
                     ups = 0;
@@ -19,6 +23,25 @@ public class BirdThread extends Thread {
                 }
             } else
                 MainActivity.bird_y += 5;
+
+            for(int i = 0; i < numberOfObstacles; i++){
+                int a = MainActivity.bird_x;
+                int b = MainActivity.bird_y;
+                int x1 = MainActivity.obstacles_x[i];
+                int y1 = MainActivity.obstacles_y[i];
+                int h =  MainActivity.obstacles_height[i];
+                int w = MainActivity.obstacles_width[i];
+                int x2 = x1 + w;
+                int y2 = y1 + h;
+                int k = MainActivity.bird_height;
+                if((x1 < a && a<x2 && y1 < b && b < y2) || (y1 < b + k && b + k < y2 && x1 < a && a<x2) || (b+k > MainActivity.main_height)){
+
+                    Log.d("Crash", "GAME OVER");
+                }
+
+
+            }
+
             try {
                 Thread.sleep(20);
             } catch (InterruptedException ex){

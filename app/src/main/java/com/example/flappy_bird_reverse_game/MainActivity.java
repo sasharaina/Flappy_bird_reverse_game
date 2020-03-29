@@ -25,9 +25,10 @@ public class MainActivity extends AppCompatActivity {
     static int bird_width;
     static int bird_height;
     static int bird_y;
+    static int bird_x;
     static boolean bird_up = false;
 
-    static int speed = 10; // скорость движения
+    static int speed = 15; // скорость движения
 
     static int numberOfObstacles = 6;
     static ImageView[] obstacles = new ImageView[numberOfObstacles];
@@ -39,6 +40,11 @@ public class MainActivity extends AppCompatActivity {
 
     static int[] obstacles_width = new int[numberOfObstacles];
     static int[] obstacles_height = new int[numberOfObstacles];
+
+    static ImageView background1;
+    static ImageView background2;
+    static ImageView cloud1;
+    static ImageView cloud2;
 
     // птица
     static ImageView bird;
@@ -52,6 +58,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
 
         // открываем приложение на весь экран
         requestWindowFeature(Window.FEATURE_NO_TITLE);
@@ -80,6 +87,10 @@ public class MainActivity extends AppCompatActivity {
         obstacles[3] = findViewById(R.id.obstacle_3);
         obstacles[4] = findViewById(R.id.obstacle_4);
         obstacles[5] = findViewById(R.id.obstacle_5);
+        cloud1 = findViewById(R.id.cloud1);
+        cloud2 = findViewById(R.id.cloud2);
+        background1 = findViewById(R.id.background1);
+        background2 = findViewById(R.id.background2);
 
         // узнатём высоты и ширины всех препятствий
         for(int i = 0; i < obstacles.length; i++){
@@ -92,12 +103,18 @@ public class MainActivity extends AppCompatActivity {
         for(int i=0; i<numberOfObstacles; i++)
             obstacles[i].setTranslationX(-obstacles_width[i]);
 
-        // размещаем птицу по середине
+        // размещаем птицу по середине и облака
         bird.measure(0,0);
         bird_width = bird.getMeasuredWidth();
         bird_height = bird.getMeasuredHeight();
         bird_y = main_height/2 - bird_height/2;
-        bird.setTranslationX(main_width/4*3);
+        bird_x = main_width/4*3;
+        bird.setTranslationX(bird_x);
+        cloud1.measure(0,0);
+        int cloud1_y = cloud1.getMeasuredHeight();
+        cloud1.setTranslationY(main_height/2 - cloud1_y/2);
+        cloud2.setTranslationY(main_height/2 - cloud1_y/2);
+
 
         // делаем реакцию на нажатие
         relativeLayout.setOnTouchListener(new View.OnTouchListener() {
@@ -108,6 +125,9 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+        background2.setTranslationX(-main_width + 1);
+        cloud2.setTranslationX(-main_width);
+
     }
 
     @Override
@@ -117,6 +137,7 @@ public class MainActivity extends AppCompatActivity {
         // запускаем потоки
         new WingsThread().start();
         new BirdThread().start();
+        new BackgroundThread().start();
         new ObstacleAsyncTask(0, 1, -1, 2, 3, 4, -1 , 5).execute();
 
     }
@@ -138,5 +159,6 @@ public class MainActivity extends AppCompatActivity {
         obstacles[number_of_obstacle].setTranslationY(obstacles_y[number_of_obstacle]);
         obstacles[number_of_obstacle].setRotation(obstacles_rotation[number_of_obstacle]);
     }
+
 
 }
