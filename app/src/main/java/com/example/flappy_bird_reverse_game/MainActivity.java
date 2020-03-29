@@ -74,9 +74,9 @@ public class MainActivity extends AppCompatActivity {
     protected void onStart() {
         super.onStart();
 
-        // TODO решить проблему с одновременной работой AsyncTask
-        new WingsAsyncTask().execute();
-        new BirdAsyncTask().execute();
+        // запускаем потоки
+        new WingsThread().start();
+        new BirdThread().start();
 
     }
 

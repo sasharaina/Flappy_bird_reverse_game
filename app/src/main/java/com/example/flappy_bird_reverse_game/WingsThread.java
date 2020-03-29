@@ -2,13 +2,10 @@ package com.example.flappy_bird_reverse_game;
 
 import android.os.AsyncTask;
 
-public class WingsAsyncTask extends AsyncTask<Void, Void, Void> {
-
-
+public class WingsThread extends Thread {
 
     @Override
-    protected Void doInBackground(Void... voids) {
-
+    public void run() {
         while(true){
             MainActivity.draw_dird();
             MainActivity.wings_up = !MainActivity.wings_up;
@@ -18,7 +15,5 @@ public class WingsAsyncTask extends AsyncTask<Void, Void, Void> {
                 ex.printStackTrace();
             }
         }
-
     }
-
 }
