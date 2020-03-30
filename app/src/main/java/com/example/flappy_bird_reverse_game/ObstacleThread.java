@@ -1,6 +1,5 @@
 package com.example.flappy_bird_reverse_game;
 
-import android.app.ActionBar;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 
