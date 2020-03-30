@@ -7,14 +7,12 @@ import android.content.Context;
 import android.graphics.Point;
 import android.os.Build;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
-import android.widget.Toast;
 
 import java.util.Objects;
 
@@ -30,16 +28,15 @@ public class MainActivity extends AppCompatActivity {
 
     static int speed = 15; // скорость движения
 
-    static int numberOfObstacles = 6;
-    static ImageView[] obstacles = new ImageView[numberOfObstacles];
+    static ImageView[] obstacles;
 
     // эти параметры будет изменяться в AcyncTask, а отображаться в UI отоке
-    static int[] obstacles_x = new int[numberOfObstacles];
-    static int[] obstacles_y = new int[numberOfObstacles];
-    static int[] obstacles_rotation = new int[numberOfObstacles];
+    static int[] obstacles_x;
+    static int[] obstacles_y;
+    static int[] obstacles_rotation;
 
-    static int[] obstacles_width = new int[numberOfObstacles];
-    static int[] obstacles_height = new int[numberOfObstacles];
+    static int[] obstacles_width;
+    static int[] obstacles_height;
 
     static ImageView background1;
     static ImageView background2;
@@ -53,6 +50,8 @@ public class MainActivity extends AppCompatActivity {
     static boolean wings_up = false;
 
     static Context context;
+
+    static RelativeLayout relativeLayout;
 
     @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     @Override
@@ -79,29 +78,12 @@ public class MainActivity extends AppCompatActivity {
         main_height = size.y;
 
         // вытаскиваем из layout все необходимые нам элементы
-        RelativeLayout relativeLayout = findViewById(R.id.relative_layout);
+        relativeLayout = findViewById(R.id.relative_layout);
         bird = findViewById(R.id.bird);
-        obstacles[0] = findViewById(R.id.obstacle_0);
-        obstacles[1] = findViewById(R.id.obstacle_1);
-        obstacles[2] = findViewById(R.id.obstacle_2);
-        obstacles[3] = findViewById(R.id.obstacle_3);
-        obstacles[4] = findViewById(R.id.obstacle_4);
-        obstacles[5] = findViewById(R.id.obstacle_5);
         cloud1 = findViewById(R.id.cloud1);
         cloud2 = findViewById(R.id.cloud2);
         background1 = findViewById(R.id.background1);
         background2 = findViewById(R.id.background2);
-
-        // узнатём высоты и ширины всех препятствий
-        for(int i = 0; i < obstacles.length; i++){
-            obstacles[i].measure(0,0);
-            obstacles_width[i] = obstacles[i].getMeasuredWidth();
-            obstacles_height[i] = obstacles[i].getMeasuredHeight();
-        }
-
-        // выносим все препядствия за экран
-        for(int i=0; i<numberOfObstacles; i++)
-            obstacles[i].setTranslationX(-obstacles_width[i]);
 
         // размещаем птицу по середине и облака
         bird.measure(0,0);
@@ -135,13 +117,15 @@ public class MainActivity extends AppCompatActivity {
         super.onStart();
 
         // запускаем потоки
+        new ObstacleThread(0, 0, -1, 0, 0, 1, -1 , 1).start();
+        // BirdThread вызывается в ObstacleThread
         new WingsThread().start();
-        new BirdThread().start();
         new BackgroundThread().start();
-        new ObstacleAsyncTask(0, 1, -1, 2, 3, 4, -1 , 5).execute();
+
 
     }
 
+    // TODO убрать єту функцию
     static void draw_dird(){
 
         // изменение картинки
@@ -154,6 +138,7 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
+    // TODO убрать єту функцию
     static void draw_obstacle(int number_of_obstacle){
         obstacles[number_of_obstacle].setTranslationX(obstacles_x[number_of_obstacle]);
         obstacles[number_of_obstacle].setTranslationY(obstacles_y[number_of_obstacle]);

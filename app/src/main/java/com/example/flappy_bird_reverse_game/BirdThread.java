@@ -1,9 +1,6 @@
 package com.example.flappy_bird_reverse_game;
 
-import android.os.AsyncTask;
 import android.util.Log;
-
-import static com.example.flappy_bird_reverse_game.MainActivity.numberOfObstacles;
 
 public class BirdThread extends Thread {
 
@@ -24,7 +21,7 @@ public class BirdThread extends Thread {
             } else
                 MainActivity.bird_y += 5;
 
-            for(int i = 0; i < numberOfObstacles; i++){
+            for(int i = 0; i < ObstacleThread.numberOfObstacles; i++){
                 int a = MainActivity.bird_x;
                 int b = MainActivity.bird_y;
                 int x1 = MainActivity.obstacles_x[i];
