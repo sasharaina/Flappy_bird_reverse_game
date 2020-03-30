@@ -13,8 +13,11 @@ import android.view.Window;
 import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
 
 import java.util.Objects;
+import java.util.Timer;
+import java.util.TimerTask;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -25,6 +28,9 @@ public class MainActivity extends AppCompatActivity {
     static int bird_y;
     static int bird_x;
     static boolean bird_up = false;
+    static int bird_rotation;
+    // Отвечает за отключение жеста тап на начальном экране и при крушении птицы
+    static boolean tapOnScreen = true;
 
     static int speed = 15; // скорость движения
 
@@ -42,6 +48,8 @@ public class MainActivity extends AppCompatActivity {
     static ImageView background2;
     static ImageView cloud1;
     static ImageView cloud2;
+    static RelativeLayout black_layout;
+    TextView text_start;
 
     // птица
     static ImageView bird;
@@ -84,6 +92,8 @@ public class MainActivity extends AppCompatActivity {
         cloud2 = findViewById(R.id.cloud2);
         background1 = findViewById(R.id.background1);
         background2 = findViewById(R.id.background2);
+        black_layout = findViewById(R.id.black_layout);
+        text_start = findViewById(R.id.text_start);
 
         // размещаем птицу по середине и облака
         bird.measure(0,0);
@@ -102,7 +112,19 @@ public class MainActivity extends AppCompatActivity {
         relativeLayout.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
-                bird_up = true;
+                bird_up = tapOnScreen;
+                return true;
+            }
+        });
+
+        text_start.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                if(tapOnScreen)
+                    return false;
+                tapOnScreen = true;
+                bird_y = main_height/2 - bird_height/2;
+                bird_x = main_width/4*3;
                 return true;
             }
         });
@@ -110,7 +132,36 @@ public class MainActivity extends AppCompatActivity {
         background2.setTranslationX(-main_width + 1);
         cloud2.setTranslationX(-main_width);
 
+
+
+        Timer myTimer = new Timer();
+        myTimer.schedule(new TimerTask() {
+            @Override
+            public void run() {
+                TimerMethod();
+            }
+
+        }, 0, 30);
+
     }
+
+    private void TimerMethod(){
+
+        this.runOnUiThread(Timer_Tick);
+
+    }
+
+    private Runnable Timer_Tick = new Runnable() {
+        public void run() {
+
+            draw_dird();
+            draw_black_layout();
+            for(int i = 0; i<ObstacleThread.numberOfObstacles; i++){
+                draw_obstacle(i);
+            }
+
+        }
+    };
 
     @Override
     protected void onStart() {
@@ -123,22 +174,31 @@ public class MainActivity extends AppCompatActivity {
         new BackgroundThread().start();
 
 
+
     }
 
-    // TODO убрать єту функцию
+    static void draw_black_layout(){
+        if(tapOnScreen){
+            black_layout.setAlpha(0);
+        }
+        else
+            black_layout.setAlpha(1);
+    }
+
     static void draw_dird(){
+
 
         // изменение картинки
         if(wings_up)
-            bird.setImageResource(R.drawable.bird1);
+            bird.setImageResource(R.drawable.bird3);
         else
-            bird.setImageResource(R.drawable.bird2);
+            bird.setImageResource(R.drawable.bird4);
 
         bird.setTranslationY(bird_y);
+        bird.setRotation(bird_rotation);
 
     }
 
-    // TODO убрать єту функцию
     static void draw_obstacle(int number_of_obstacle){
         obstacles[number_of_obstacle].setTranslationX(obstacles_x[number_of_obstacle]);
         obstacles[number_of_obstacle].setTranslationY(obstacles_y[number_of_obstacle]);

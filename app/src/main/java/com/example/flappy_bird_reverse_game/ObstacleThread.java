@@ -8,7 +8,7 @@ import java.util.List;
 
 public class ObstacleThread extends Thread {
 
-    private Integer[] numbers_of_obstacle;
+    public static Integer[] numbers_of_obstacle;
     static public int numberOfObstacles;
     private int main_width = MainActivity.main_width;
     private int main_height = MainActivity.main_height;
@@ -37,7 +37,7 @@ public class ObstacleThread extends Thread {
                 obstacle.setImageResource(R.drawable.obstacle_1);
             list_obstacles.add(obstacle);
             list_numbers_of_obstacle.add(obstacle_number++);
-            MainActivity.relativeLayout.addView(obstacle);
+            MainActivity.relativeLayout.addView(obstacle, 2);
         }
 
         MainActivity.obstacles = new ImageView[obstacle_number];
@@ -105,7 +105,7 @@ public class ObstacleThread extends Thread {
                     continue;
                 if(MainActivity.obstacles_x[numbers_of_obstacle[i]] >= main_width)
                     MainActivity.obstacles_x[numbers_of_obstacle[i]] = min;
-                MainActivity.draw_obstacle(numbers_of_obstacle[i]);
+                //MainActivity.draw_obstacle(numbers_of_obstacle[i]);
                 MainActivity.obstacles_x[numbers_of_obstacle[i]] += MainActivity.speed;
             }
             try {

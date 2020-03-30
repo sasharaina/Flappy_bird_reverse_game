@@ -7,7 +7,7 @@ public class WingsThread extends Thread {
     @Override
     public void run() {
         while(true){
-            MainActivity.draw_dird();
+           // MainActivity.draw_dird();
             MainActivity.wings_up = !MainActivity.wings_up;
             try {
                 Thread.sleep(200);
