@@ -5,6 +5,8 @@ import android.util.Log;
 public class BirdThread extends Thread {
 
     int ups = 0;
+    int smoothness = 0;
+
 
     @Override
     public void run() {
@@ -15,9 +17,36 @@ public class BirdThread extends Thread {
                     MainActivity.bird_y -= 15;
 
                     // TODO установить сначала 10, потом 20, потом уже 30
-                    MainActivity.bird_rotation = 30;
+                    smoothness = 5;
+                    if(smoothness <= 5) {
+                        MainActivity.bird_rotation = 5;
+                    }
+                   else if(smoothness <=10){
+                        MainActivity.bird_rotation = 10;
+                    }
+                    else if(smoothness <=15){
+                        MainActivity.bird_rotation = 15;
+                    }
+                    else if(smoothness <=20){
+                        MainActivity.bird_rotation = 20;
+
+                    }
+                    else if(smoothness <=25){
+                        MainActivity.bird_rotation = 25;
+                        smoothness = 0;
+                    }
+                    else if(smoothness <=30){
+                        MainActivity.bird_rotation = 30;
+
+                    }else if(smoothness <=35){
+                        MainActivity.bird_rotation = 35;
+                        smoothness = 0;
+
+                    }
+
                 }
                 ups++;
+                smoothness++;
                 if (ups >= 3) {
                     ups = 0;
                     MainActivity.bird_up = false;
@@ -28,7 +57,34 @@ public class BirdThread extends Thread {
                     MainActivity.bird_y += 14;
 
                 // TODO установить сначала -20, потом -40, потом -55 и потом -70,
-                MainActivity.bird_rotation = -70;
+                if(smoothness >= -10) {
+                    MainActivity.bird_rotation = -10;
+                }
+               else if(smoothness >= -20) {
+                    MainActivity.bird_rotation = -20;
+                }
+               else if(smoothness >= -35) {
+                    MainActivity.bird_rotation = -35;
+                }
+               else if(smoothness >= -45) {
+                    MainActivity.bird_rotation = -45;
+
+                }
+                else if(smoothness >= -55) {
+                    MainActivity.bird_rotation = -55;
+
+                }
+                else if(smoothness >= -65) {
+                    MainActivity.bird_rotation = -65;
+
+                }
+                else if(smoothness >= -70) {
+                    MainActivity.bird_rotation = -70;
+
+
+                }
+
+                    smoothness--;
             }
 
 
