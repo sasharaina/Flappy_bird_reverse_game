@@ -1,5 +1,6 @@
 package com.example.flappy_bird_reverse_game;
 
+import android.content.Context;
 import android.util.Log;
 
 public class BirdThread extends Thread {
@@ -16,7 +17,7 @@ public class BirdThread extends Thread {
                 if(MainActivity.bird_y > 15) {
                     MainActivity.bird_y -= 15;
 
-                    // TODO установить сначала 10, потом 20, потом уже 30
+                    // установить плавность
                     smoothness = 5;
                     if(smoothness <= 5) {
                         MainActivity.bird_rotation = 5;
@@ -56,7 +57,7 @@ public class BirdThread extends Thread {
                 if(MainActivity.tapOnScreen == false)
                     MainActivity.bird_y += 14;
 
-                // TODO установить сначала -20, потом -40, потом -55 и потом -70,
+                // установить плавность
                 if(smoothness >= -10) {
                     MainActivity.bird_rotation = -10;
                 }
@@ -81,9 +82,7 @@ public class BirdThread extends Thread {
                 else if(smoothness >= -70) {
                     MainActivity.bird_rotation = -70;
 
-
                 }
-
                     smoothness--;
             }
 
@@ -100,9 +99,12 @@ public class BirdThread extends Thread {
                 int k = MainActivity.bird_height;
                 if((x1 < a && a<x2 && y1 < b && b < y2) || (y1 < b + k && b + k < y2 && x1 < a && a<x2) || (b+k > MainActivity.main_height)){
 
-                    // TODO при ударе должен отключаться тап
+                    // при ударе должен отключаться тап
                     MainActivity.tapOnScreen = false;
 
+                    if(b+k <= MainActivity.main_height) {
+                        MainActivity.vibrator.vibrate(20);
+                    }
 
                 }
 

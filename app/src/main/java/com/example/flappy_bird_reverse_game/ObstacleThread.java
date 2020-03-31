@@ -37,7 +37,7 @@ public class ObstacleThread extends Thread {
                 obstacle.setImageResource(R.drawable.obstacle_1);
             list_obstacles.add(obstacle);
             list_numbers_of_obstacle.add(obstacle_number++);
-            MainActivity.relativeLayout.addView(obstacle, 2);
+            MainActivity.relativeLayout.addView(obstacle, 4);
         }
 
         MainActivity.obstacles = new ImageView[obstacle_number];
