@@ -103,6 +103,7 @@ public class BirdThread extends Thread {
                     MainActivity.tapOnScreen = false;
 
                     if(b+k <= MainActivity.main_height) {
+                        MainActivity.soundPlay(MainActivity.mPlayer1);
                         MainActivity.vibrator.vibrate(20);
                     }
 

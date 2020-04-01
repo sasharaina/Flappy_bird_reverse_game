@@ -7,6 +7,7 @@ import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.graphics.Point;
+import android.media.MediaPlayer;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Vibrator;
@@ -64,6 +65,8 @@ public class MainActivity extends AppCompatActivity {
     static SharedPreferences sPref;
     static TextView best_score_view;
     static Vibrator vibrator;
+    static MediaPlayer mPlayer1;
+    static MediaPlayer mPlayer2;
 
 
     // птица
@@ -116,6 +119,8 @@ public class MainActivity extends AppCompatActivity {
         gameOver = findViewById(R.id.gameOver);
         best_score_view = findViewById(R.id.best_score);
         best_score_view.setText("Best: " + best_score);
+        mPlayer1=MediaPlayer.create(this, R.raw.die);
+        mPlayer2=MediaPlayer.create(this, R.raw.wing);
 
         vibrator = (Vibrator)getSystemService(Context.VIBRATOR_SERVICE);
 
@@ -133,11 +138,11 @@ public class MainActivity extends AppCompatActivity {
 
 
         // делаем реакцию на нажатие
-        // TODO почему оно вызывается два раза
         relativeLayout.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
                 bird_up = tapOnScreen;
+                soundPlay(mPlayer2);
                 return true;
             }
         });
@@ -159,8 +164,6 @@ public class MainActivity extends AppCompatActivity {
 
         background2.setTranslationX(-main_width + 1);
         cloud2.setTranslationX(-main_width);
-
-
 
         Timer myTimer = new Timer();
         myTimer.schedule(new TimerTask() {
@@ -246,6 +249,11 @@ public class MainActivity extends AppCompatActivity {
         obstacles[number_of_obstacle].setTranslationX(obstacles_x[number_of_obstacle]);
         obstacles[number_of_obstacle].setTranslationY(obstacles_y[number_of_obstacle]);
         obstacles[number_of_obstacle].setRotation(obstacles_rotation[number_of_obstacle]);
+    }
+
+    public static void soundPlay(MediaPlayer sound) {
+        sound.start();
+
     }
 
 }
