@@ -195,6 +195,9 @@ public class MainActivity extends AppCompatActivity {
         }
     };
 
+    /*
+     * Устанавливает темный фон при запуске игры и при окончании
+     */
     @SuppressLint("SetTextI18n")
     void draw_black_layout(){
         if(tapOnScreen){

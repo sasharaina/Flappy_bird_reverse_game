@@ -7,7 +7,7 @@ import java.util.LinkedList;
 import java.util.List;
 
 /*
- * Поток, который отвечает за движения препятсвия
+ * Поток, который отвечает за движение препятствий
  */
 
 public class ObstacleThread extends Thread {
@@ -21,9 +21,9 @@ public class ObstacleThread extends Thread {
     // самая минимальная начальная позиция
     private float min = 0;
 
-    // номера препятствий передаються следующим образом: нижнее, верхнее, нижнее, верхнее...
-    // передаються именно номера картинок препядствий
-    // если препядствие отсутствует - ставит -1
+    // номера препятствий передаются следующим образом: нижнее, верхнее, нижнее, верхнее...
+    // передаються именно номера картинок препятствий
+    // если препятствие отсутствует - ставим -1
     ObstacleThread(MainActivity mainActivity, int... numbers_of_images){
         this.mainActivity = mainActivity;
         int obstacle_number = 0;
@@ -77,8 +77,8 @@ public class ObstacleThread extends Thread {
 
     }
 
-    // препятствия должны двигаться с лева на право , т.е. параметр translateX должен
-    //  постепенно меняться от < -obstacle_width > до < main_width + obstacle_width >
+    //препятствия должны двигаться с лева на право , т.е. параметр translateX должен
+    //постепенно меняться от < -obstacle_width > до < main_width >
 
     @Override
     public void run() {
@@ -101,7 +101,7 @@ public class ObstacleThread extends Thread {
                 min = MainActivity.obstacles_x[numbers_of_obstacle[i]];
         }
 
-        // минимальная позиция переноситься чуть правее
+        //минимальная позиция переносится чуть правее
         min += main_width/2;
 
         do {
